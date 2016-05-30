@@ -10,7 +10,7 @@ if [ -z "${STEAM_USER}" ]; then STEAM_CREDENTIALS="anonymous"; else STEAM_CREDEN
 if [ -f /overlay/.seed ] || [ -f /seed/${CONTAINER_TYPE}/seed ]
 then
   tar -cf /overlay/root.tar /root && mkdir /root/steamcmd && curl -s "https://steamcdn-a.akamaihd.net/client/installer/steamcmd_linux.tar.gz" | tar -vzx -C "/root/steamcmd/"
-  while [ "$( find /server/ -type f | wc -l )" -gt 0 ]; do /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit; done
+  while [ "$( find /server/ -type f | wc -l )" -lt 1 ]; do /root/steamcmd/steamcmd.sh +login ${STEAM_CREDENTIALS} +force_install_dir /server +app_update ${STEAM_APP_ID} +quit; done
   tar -cf /overlay/server.tar /server && tar -cf /overlay/root-steamcmd.tar /root/steamcmd && tar -cf /overlay/root-steam.tar /root/Steam && echo "seed generation complete, pausing..." && read && exit
 else
   if [ ! -f /overlay/.provisioned ]; then mkdir -p /overlay/{root,server,root-steamcmd,root-steam} /server/ && touch /overlay/.provisioned; fi
